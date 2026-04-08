@@ -68,9 +68,14 @@ class HomePage extends StatelessWidget {
                                         ),
                                       ),
                                       NavigationDestination(
-                                        icon: const Icon(Icons.analytics_outlined),
-                                        label: context.l10n.homeNavigatorAnalyse,
-                                        selectedIcon: const Icon(Icons.analytics),
+                                        icon: const Icon(
+                                          Icons.analytics_outlined,
+                                        ),
+                                        label:
+                                            context.l10n.homeNavigatorAnalyse,
+                                        selectedIcon: const Icon(
+                                          Icons.analytics,
+                                        ),
                                       ),
                                       NavigationDestination(
                                         icon: const Icon(

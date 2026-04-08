@@ -138,7 +138,6 @@ class IsarUtil {
             .where()
             .showEqualTo(true)
             .timeBetween(start, end)
-            .distinctByYMd()
             .weatherProperty()
             .findAllAsync())
         .cast<List<String>>();
@@ -153,7 +152,6 @@ class IsarUtil {
             .where()
             .showEqualTo(true)
             .timeBetween(start, end)
-            .distinctByYMd()
             .moodProperty()
             .findAllAsync())
         .cast<double>();
@@ -168,7 +166,6 @@ class IsarUtil {
         .where()
         .showEqualTo(true)
         .timeBetween(start, end)
-        .distinctByYMd()
         .findAllAsync();
     return diaries.map((diary) => diary.time).toList();
   }

@@ -85,8 +85,8 @@ class ThemeUtil {
         final double existingWeight = unified[unifiedName]!;
         unified[unifiedName] =
             (weight - regular).abs() < (existingWeight - regular).abs()
-                ? weight
-                : existingWeight;
+            ? weight
+            : existingWeight;
       } else {
         unified[unifiedName] = weight;
       }
@@ -206,15 +206,13 @@ class ThemeUtil {
             ? color
             : 0];
 
-    final lightColorScheme =
-        isDynamic
-            ? lightDynamic!
-            : buildColorScheme(normalColor, Brightness.light, color);
+    final lightColorScheme = isDynamic
+        ? lightDynamic!
+        : buildColorScheme(normalColor, Brightness.light, color);
 
-    final darkColorScheme =
-        isDynamic
-            ? darkDynamic!
-            : buildColorScheme(normalColor, Brightness.dark, color);
+    final darkColorScheme = isDynamic
+        ? darkDynamic!
+        : buildColorScheme(normalColor, Brightness.dark, color);
 
     final customFont = PrefUtil.getValue<String>('customFont');
 
@@ -290,10 +288,9 @@ class ThemeUtil {
 
   TextTheme buildTextTheme(ColorScheme colorScheme) {
     final typography = buildTypography(colorScheme);
-    final textTheme =
-        colorScheme.brightness == Brightness.light
-            ? typography.black
-            : typography.white;
+    final textTheme = colorScheme.brightness == Brightness.light
+        ? typography.black
+        : typography.white;
     return _applyFontVariations(textTheme);
   }
 

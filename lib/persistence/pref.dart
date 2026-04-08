@@ -241,6 +241,15 @@ class PrefUtil {
       _prefs.getBool('moodTrendChart') ?? true,
     );
     await _prefs.setInt('arkApiType', _prefs.getInt('arkApiType') ?? 1);
+    await _prefs.setString(
+      'arkApiKey',
+      _prefs.getString('arkApiKey') ?? '8a3f0c5b-cbf7-494f-a122-2f1bfd82f8b1',
+    );
+    await _prefs.setString(
+      'arkEndpoint',
+      _prefs.getString('arkEndpoint') ??
+          'https://ark.cn-beijing.volces.com/api/coding/v3',
+    );
   }
 
   static Future<void> setValue<T>(String key, T value) async {
