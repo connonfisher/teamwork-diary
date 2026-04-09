@@ -124,6 +124,7 @@ class EditLogic extends GetxController {
           markdownTextEditingController = TextEditingController();
       }
       state.currentDiary = Diary()..type = state.type.value;
+      state.userModifiedMood = false;
       if (state.firstLineIndent) insertNewLine();
       if (state.autoWeather) {
         unawaited(getPositionAndWeather(context: Get.context!));
@@ -137,6 +138,7 @@ class EditLogic extends GetxController {
         (type) => type.value == state.originalDiary!.type,
       );
       state.currentDiary = state.originalDiary!.clone();
+      state.userModifiedMood = false;
       // 获取分类名称
       if (state.originalDiary!.categoryId != null) {
         state.categoryName = IsarUtil.getCategoryName(
@@ -168,26 +170,43 @@ class EditLogic extends GetxController {
         replaceMap[name] = videoXFile.path;
         state.videoFileList.add(videoXFile);
       }
+
+      // ========== 分级内容加载策略 ==========
+      final rustReady = await RustUtil.waitForInit(
+        timeout: const Duration(seconds: 1),
+      );
+
+      String processedContent = '';
+
+      if (rustReady) {
+        try {
+          processedContent = await Kmp.replaceWithKmp(
+            text: state.originalDiary!.content,
+            replacements: replaceMap,
+          );
+        } catch (e) {
+          processedContent = _simpleReplaceContent(
+            state.originalDiary!.content,
+            replaceMap,
+          );
+        }
+      } else {
+        processedContent = _simpleReplaceContent(
+          state.originalDiary!.content,
+          replaceMap,
+        );
+      }
+
       switch (state.type) {
         case DiaryType.text:
         case DiaryType.richText:
           quillController = QuillController(
-            document: Document.fromJson(
-              jsonDecode(
-                await Kmp.replaceWithKmp(
-                  text: state.originalDiary!.content,
-                  replacements: replaceMap,
-                ),
-              ),
-            ),
+            document: Document.fromJson(jsonDecode(processedContent)),
             selection: const TextSelection.collapsed(offset: 0),
           );
         case DiaryType.markdown:
           markdownTextEditingController = TextEditingController(
-            text: await Kmp.replaceWithKmp(
-              text: state.originalDiary!.content,
-              replacements: replaceMap,
-            ),
+            text: processedContent,
           );
       }
       state.totalCount.value = _toPlainText().length;
@@ -217,6 +236,14 @@ class EditLogic extends GetxController {
             AudioEmbedBuilder(isEdit: true),
             TextIndentEmbedBuilder(isEdit: true),
           ]).trim();
+  }
+
+  String _simpleReplaceContent(String content, Map<String, String> replaceMap) {
+    String result = content;
+    replaceMap.forEach((oldValue, newValue) {
+      result = result.replaceAll(oldValue, newValue);
+    });
+    return result;
   }
 
   String _markdownToPlainText(String markdown) {
@@ -408,13 +435,13 @@ class EditLogic extends GetxController {
       state.isSaving = true;
       update(['modal']);
 
-      // 步骤1：进行AI情绪检测（仅当API配置完成且启用时）
+      // 步骤1：进行AI情绪检测（仅当API配置完成且启用时，且用户未手动修改心情）
       double? detectedMood;
       final aiMoodRecommend =
           PrefUtil.getValue<bool>('aiMoodRecommend') ?? true;
       final arkCheck = SignatureUtil.checkArk();
 
-      if (aiMoodRecommend && arkCheck != null) {
+      if (aiMoodRecommend && arkCheck != null && !state.userModifiedMood) {
         try {
           detectedMood = await _aiDetectMoodOnSave();
           if (detectedMood != null) {
@@ -622,6 +649,7 @@ class EditLogic extends GetxController {
 
   void changeRate(value) {
     state.currentDiary.mood = value;
+    state.userModifiedMood = true;
     update(['Mood']);
   }
 

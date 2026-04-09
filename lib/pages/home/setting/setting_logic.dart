@@ -215,17 +215,6 @@ class SettingLogic extends GetxController {
     }
   }
 
-  Future<bool> setMoodPaletteEnabled({required bool enabled}) async {
-    try {
-      await PrefUtil.setValue<bool>('moodPaletteEnabled', enabled);
-      return true;
-    } catch (e) {
-      return false;
-    } finally {
-      update();
-    }
-  }
-
   Future<bool> setMoodPaletteStyle({required int style}) async {
     try {
       await PrefUtil.setValue<int>('moodPaletteStyle', style);

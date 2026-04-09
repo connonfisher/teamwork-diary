@@ -499,7 +499,7 @@ class IsarUtil {
       final diaries = isar.diarys.where().findAll(offset: i, limit: 50);
       isar.write((isar) {
         for (final diary in diaries) {
-          // 如果日记有分类，但是本地没有这个分类，就创建一个分类，名称为“修复分类+数字”
+          // 如果日记有分类，但是本地没有这个分类，就创建一个分类，名称为"修复分类+数字"
           final id = diary.categoryId;
           if (id != null && isar.categorys.where().idEqualTo(id).isEmpty()) {
             isar.categorys.put(

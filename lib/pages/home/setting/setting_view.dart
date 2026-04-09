@@ -571,29 +571,6 @@ class SettingPage extends StatelessWidget {
                   const Divider(),
                   const SizedBox(height: 12),
                   GetBuilder<SettingLogic>(
-                    id: 'MoodPalette',
-                    builder: (_) {
-                      return SwitchListTile(
-                        title: const Text('启用情绪调色盘'),
-                        value:
-                            PrefUtil.getValue<bool>('moodPaletteEnabled') ??
-                            true,
-                        onChanged: (value) async {
-                          final res = await logic.setMoodPaletteEnabled(
-                            enabled: value,
-                          );
-                          if (res) {
-                            toast.success();
-                            logic.update(['MoodPalette']);
-                          } else {
-                            toast.error();
-                          }
-                        },
-                      );
-                    },
-                  ),
-                  const SizedBox(height: 12),
-                  GetBuilder<SettingLogic>(
                     id: 'MoodPaletteStyle',
                     builder: (_) {
                       return ListTile(

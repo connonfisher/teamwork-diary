@@ -416,8 +416,6 @@ class EditPage extends StatelessWidget {
     // }
 
     Widget buildMoodSlider() {
-      final moodPaletteEnabled =
-          PrefUtil.getValue<bool>('moodPaletteEnabled') ?? true;
       return Container(
         padding: const EdgeInsets.only(top: 8.0),
         child: Column(
@@ -465,15 +463,13 @@ class EditPage extends StatelessWidget {
                   ),
               ],
             ),
-            if (moodPaletteEnabled) ...[
-              const SizedBox(height: 8.0),
-              MoodPaletteComponent(
-                currentValue: state.currentDiary.mood,
-                onValueChanged: (value) {
-                  logic.changeRate(value);
-                },
-              ),
-            ],
+            const SizedBox(height: 8.0),
+            MoodPaletteComponent(
+              currentValue: state.currentDiary.mood,
+              onValueChanged: (value) {
+                logic.changeRate(value);
+              },
+            ),
           ],
         ),
       );

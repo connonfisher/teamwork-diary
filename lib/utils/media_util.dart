@@ -455,13 +455,20 @@ class MediaUtil {
     final Map<DateTime, List<String>> groupedMap = {};
     for (final image in filePaths) {
       // 根据媒体文件类型提取日期
-      final uuid = image.split('image-')[1].split('.')[0];
-      final dateTime = MediaUtil.extractDateFromUUID(uuid);
-      if (dateTime != null) {
-        // 获取日期部分
-        final dateOnly = DateTime(dateTime.year, dateTime.month, dateTime.day);
+      try {
+        final fileName = basename(image);
+        if (!fileName.startsWith('image-')) continue;
+        final uuid = fileName.split('image-')[1].split('.')[0];
+        final dateTime = MediaUtil.extractDateFromUUID(uuid);
+        if (dateTime != null) {
+          // 获取日期部分
+          final dateOnly = DateTime(dateTime.year, dateTime.month, dateTime.day);
 
-        groupedMap.putIfAbsent(dateOnly, () => []).add(image);
+          groupedMap.putIfAbsent(dateOnly, () => []).add(image);
+        }
+      } catch (e) {
+        // 跳过格式不正确的文件，不崩溃
+        continue;
       }
     }
     groupedMap.forEach((key, value) {
@@ -509,12 +516,19 @@ class MediaUtil {
     final Map<DateTime, List<String>> groupedMap = {};
     for (final audio in filePaths) {
       // 根据媒体文件类型提取日期
-      final uuid = audio.split('audio-')[1].split('.')[0];
-      final dateTime = MediaUtil.extractDateFromUUID(uuid);
-      if (dateTime != null) {
-        // 获取日期部分
-        final dateOnly = DateTime(dateTime.year, dateTime.month, dateTime.day);
-        groupedMap.putIfAbsent(dateOnly, () => []).add(audio);
+      try {
+        final fileName = basename(audio);
+        if (!fileName.startsWith('audio-')) continue;
+        final uuid = fileName.split('audio-')[1].split('.')[0];
+        final dateTime = MediaUtil.extractDateFromUUID(uuid);
+        if (dateTime != null) {
+          // 获取日期部分
+          final dateOnly = DateTime(dateTime.year, dateTime.month, dateTime.day);
+          groupedMap.putIfAbsent(dateOnly, () => []).add(audio);
+        }
+      } catch (e) {
+        // 跳过格式不正确的文件，不崩溃
+        continue;
       }
     }
     groupedMap.forEach((key, value) {

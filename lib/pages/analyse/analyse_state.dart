@@ -21,6 +21,10 @@ class AnalyseState {
 
   late String reply;
 
+  //新增：关键词相关
+  List<String> keywords = [];
+  Map<String, int> keywordFrequency = {};
+
   AnalyseState() {
     final now = DateTime.now().copyWith(hour: 0, minute: 0, second: 0);
     reply = '';
@@ -31,5 +35,7 @@ class AnalyseState {
     weatherList = [];
     moodMap = {};
     weatherMap = {};
+    keywords = [];
+    keywordFrequency = {};
   }
 }

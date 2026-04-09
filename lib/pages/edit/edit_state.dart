@@ -74,5 +74,8 @@ class EditState {
   // AI情绪推荐加载状态
   bool loadingAiMood = false;
 
+  // 是否用户手动修改了心情
+  bool userModifiedMood = false;
+
   EditState();
 }

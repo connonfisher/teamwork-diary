@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:moodiary/api/api.dart';
 import 'package:moodiary/common/models/ark.dart';
+import 'package:moodiary/common/models/isar/diary.dart';
 
 import 'package:moodiary/persistence/isar.dart';
 import 'package:moodiary/utils/array_util.dart';
@@ -49,6 +50,35 @@ class AnalyseLogic extends GetxController {
     }
     state.moodMap = ArrayUtil.countList(state.moodList);
     state.weatherMap = ArrayUtil.countList(state.weatherList);
+
+    // 查询指定范围内的所有日记，提取关键词
+    final diaries = await IsarUtil.getDiariesByDateRange(
+      start,
+      end.subtract(const Duration(days: -1)),
+      all: true,
+    );
+
+    // 收集所有关键词
+    final List<String> allKeywords = [];
+    for (final diary in diaries) {
+      allKeywords.addAll(diary.keywords);
+    }
+
+    // 统计关键词频率
+    final Map<String, int> keywordFrequency = {};
+    for (final keyword in allKeywords) {
+      keywordFrequency[keyword] = (keywordFrequency[keyword] ?? 0) + 1;
+    }
+
+    // 按频率排序，取前20个高频关键词
+    final sortedKeywords = keywordFrequency.entries.toList()
+      ..sort((a, b) => b.value.compareTo(a.value));
+    final topKeywords = sortedKeywords.take(20).map((e) => e.key).toList();
+
+    // 保存到state
+    state.keywords = topKeywords;
+    state.keywordFrequency = keywordFrequency;
+
     state.finished = true;
     update();
   }
@@ -59,6 +89,8 @@ class AnalyseLogic extends GetxController {
     state.weatherList.clear();
     state.moodMap.clear();
     state.weatherMap.clear();
+    state.keywords.clear();
+    state.keywordFrequency.clear();
   }
 
   //弹出日期选择框
@@ -95,9 +127,18 @@ class AnalyseLogic extends GetxController {
           ArkMessage(
             role: 'system',
             content:
-                '我会给你一组来自一款日记APP的数据，其中包含了在某一段时间内，日记所记录的心情情况，根据这些数据，分析用户最近的心情状况，并给出合理的建议，心情的值是一个从0.0到1.0的浮点数，从小到大表示心情从坏到好，给你的值是一个Map，其中的Key是心情指数，Value是对应心情指数出现的次数。给出的输出应当是结论，不需要给出分析过程，不需要其他反馈。',
+                '我会给你一组来自一款日记APP的数据，其中包含了在某一段时间内，日记所记录的心情情况和关键词，根据这些数据，分析用户最近的心情状况，并给出合理的建议。\n'
+                '心情的值是一个从0.0到1.0的浮点数，从小到大表示心情从坏到好。\n'
+                '心情数据是一个Map，其中的Key是心情指数，Value是对应心情指数出现的次数。\n'
+                '关键词是用户日记中提取的高频词汇，反映了用户最近关注的内容。\n'
+                '请结合心情评分和关键词，给出更准确的分析和建议。\n'
+                '给出的输出应当是结论，不需要给出分析过程，不需要其他反馈。',
           ),
-          ArkMessage(role: 'user', content: '心情：${state.moodMap.toString()}'),
+          ArkMessage(
+            role: 'user',
+            content:
+                '心情：${state.moodMap.toString()}\n关键词：${state.keywords.toString()}',
+          ),
         ],
         0,
       );
