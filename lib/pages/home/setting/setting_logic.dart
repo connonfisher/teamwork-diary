@@ -85,12 +85,12 @@ class SettingLogic extends GetxController {
   }
 
   Future<void> toAi() async {
-    if (PrefUtil.getValue<String>('tencentId') != null &&
-        PrefUtil.getValue<String>('tencentKey') != null) {
+    if (PrefUtil.getValue<String>('arkApiKey') != null &&
+        PrefUtil.getValue<String>('arkEndpoint') != null) {
       HapticFeedback.selectionClick();
       Get.toNamed(AppRoutes.assistantPage);
     } else {
-      toast.info(message: '请先配置Key');
+      toast.info(message: '请先配置火山方舟API Key和Endpoint');
     }
   }
 

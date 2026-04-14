@@ -462,7 +462,11 @@ class MediaUtil {
         final dateTime = MediaUtil.extractDateFromUUID(uuid);
         if (dateTime != null) {
           // 获取日期部分
-          final dateOnly = DateTime(dateTime.year, dateTime.month, dateTime.day);
+          final dateOnly = DateTime(
+            dateTime.year,
+            dateTime.month,
+            dateTime.day,
+          );
 
           groupedMap.putIfAbsent(dateOnly, () => []).add(image);
         }
@@ -523,7 +527,11 @@ class MediaUtil {
         final dateTime = MediaUtil.extractDateFromUUID(uuid);
         if (dateTime != null) {
           // 获取日期部分
-          final dateOnly = DateTime(dateTime.year, dateTime.month, dateTime.day);
+          final dateOnly = DateTime(
+            dateTime.year,
+            dateTime.month,
+            dateTime.day,
+          );
           groupedMap.putIfAbsent(dateOnly, () => []).add(audio);
         }
       } catch (e) {

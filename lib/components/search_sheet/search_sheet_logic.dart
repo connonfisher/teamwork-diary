@@ -96,9 +96,6 @@ class SearchSheetLogic extends GetxController {
 
   Future<void> doSearch() async {
     final currentText = textEditingController.text.trim();
-    if (currentText == _lastText) {
-      return;
-    }
     if (currentText.isBlank) {
       clear();
       return;

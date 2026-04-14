@@ -550,8 +550,8 @@ class SettingPage extends StatelessWidget {
                           final result = await showModalActionSheet<int>(
                             context: context,
                             actions: [
-                              SheetAction(key: 0, label: '普通版'),
-                              SheetAction(key: 1, label: 'Coding Plan'),
+                              const SheetAction(key: 0, label: '普通版'),
+                              const SheetAction(key: 1, label: 'Coding Plan'),
                             ],
                           );
                           if (result != null) {
@@ -588,8 +588,8 @@ class SettingPage extends StatelessWidget {
                           final result = await showModalActionSheet<int>(
                             context: context,
                             actions: [
-                              SheetAction(key: 0, label: '默认样式'),
-                              SheetAction(key: 1, label: '简约样式'),
+                              const SheetAction(key: 0, label: '默认样式'),
+                              const SheetAction(key: 1, label: '简约样式'),
                             ],
                           );
                           if (result != null) {

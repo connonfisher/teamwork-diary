@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:moodiary/api/api.dart';
 import 'package:moodiary/common/models/ark.dart';
@@ -128,7 +127,6 @@ class AssistantLogic extends GetxController {
                       currentMessage.content +
                       result.choices!.first.delta!.content!,
                 );
-                HapticFeedback.vibrate();
                 update();
                 toBottom();
               }

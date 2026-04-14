@@ -165,8 +165,8 @@ class LaboratoryPage extends StatelessWidget {
                       final result = await showModalActionSheet<int>(
                         context: context,
                         actions: [
-                          SheetAction(key: 0, label: '默认样式'),
-                          SheetAction(key: 1, label: '简约样式'),
+                          const SheetAction(key: 0, label: '默认样式'),
+                          const SheetAction(key: 1, label: '简约样式'),
                         ],
                       );
                       if (result != null) {

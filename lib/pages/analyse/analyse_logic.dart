@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:moodiary/api/api.dart';
 import 'package:moodiary/common/models/ark.dart';
-import 'package:moodiary/common/models/isar/diary.dart';
 
 import 'package:moodiary/persistence/isar.dart';
 import 'package:moodiary/utils/array_util.dart';
