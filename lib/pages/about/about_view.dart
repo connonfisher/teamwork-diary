@@ -10,7 +10,6 @@ import 'package:moodiary/components/base/text.dart';
 import 'package:moodiary/components/base/tile/setting_tile.dart';
 import 'package:moodiary/gen/assets.gen.dart';
 import 'package:moodiary/l10n/l10n.dart';
-import 'package:moodiary/utils/update_util.dart';
 
 import 'about_logic.dart';
 
@@ -163,28 +162,9 @@ class AboutPage extends StatelessWidget {
                     child: Column(
                       children: [
                         AdaptiveListTile(
-                          leading: const Icon(Icons.update_rounded),
-                          title: Text(context.l10n.aboutUpdate),
-                          isFirst: true,
-                          trailing: const Icon(Icons.chevron_right_rounded),
-                          onTap: () async {
-                            await UpdateUtil.checkShouldUpdate(
-                              state.appVersion,
-                              handle: true,
-                            );
-                          },
-                        ),
-                        AdaptiveListTile(
-                          leading: const Icon(Icons.source_rounded),
-                          title: Text(context.l10n.aboutSource),
-                          trailing: const Icon(Icons.chevron_right_rounded),
-                          onTap: () async {
-                            await logic.toSource();
-                          },
-                        ),
-                        AdaptiveListTile(
                           leading: const Icon(Icons.file_copy_rounded),
                           title: Text(context.l10n.aboutUserAgreement),
+                          isFirst: true,
                           trailing: const Icon(Icons.chevron_right_rounded),
                           onTap: () {
                             logic.toAgreement();

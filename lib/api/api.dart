@@ -7,7 +7,6 @@ import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:moodiary/common/models/ark.dart';
 import 'package:moodiary/common/models/geo.dart';
-import 'package:moodiary/common/models/github.dart';
 import 'package:moodiary/common/models/hitokoto.dart';
 import 'package:moodiary/common/models/image.dart';
 import 'package:moodiary/common/models/weather.dart';
@@ -144,20 +143,6 @@ class Api {
     } else {
       return null;
     }
-  }
-
-  static Future<GithubRelease?> getGithubRelease() async {
-    final res = await HttpUtil().get(
-      'https://api.github.com/repos/ZhuJHua/moodiary/releases/latest',
-    );
-    if (res.data != null) {
-      final githubRelease = await compute(
-        GithubRelease.fromJson,
-        res.data as Map<String, dynamic>,
-      );
-      return githubRelease;
-    }
-    return null;
   }
 
   static Future<List<String>?> updateHitokoto() async {

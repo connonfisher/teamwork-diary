@@ -64,16 +64,6 @@ class AboutLogic extends GetxController with GetSingleTickerProviderStateMixin {
     //await launchUrl(uri, mode: LaunchMode.platformDefault);
   }
 
-  //跳转至源代码
-  Future<void> toSource() async {
-    final uri = Uri(
-      scheme: 'https',
-      host: 'github.com',
-      path: 'ZhuJHua/moodiary',
-    );
-    await launchUrl(uri, mode: LaunchMode.platformDefault);
-  }
-
   void playConfetti() {
     HapticFeedback.selectionClick();
     confettiController.play();
